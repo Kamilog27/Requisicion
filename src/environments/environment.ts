@@ -3,6 +3,7 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  baseUrl:'https://financialsoftware.com.co:446/cncodema/APIS/Apicompras/API',
   production: false
 };
 

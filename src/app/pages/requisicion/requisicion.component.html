@@ -1,0 +1,153 @@
+<div class="container mb-5" id="contenido-a-descargar">
+    <div class="row">
+        <div class="col mt-5">
+            <h2 class="text-center color-titulo"> {{texto}} Requisición</h2>
+        </div>
+    </div>
+    <form [formGroup]="formulario" (ngSubmit)="guardar()">
+        <div class="row">
+            <div class="col d-flex justify-content-end">
+                <button type="submit" class="btn btn-outline-success mx-2"> <i class="fa-solid fa-check"></i>
+                    Guardar</button>
+                <button type="button" class="btn btn-outline-danger mx-2" [routerLink]="['/listarrequisiciones']"> <i
+                        class="fa-solid fa-xmark"></i>
+                    Cancelar</button>
+                <button *ngIf="imprimir" type="button" class="btn btn-outline-info" (click)="descargarComoPDF()"> <i
+                        class="fa-solid fa-print"></i> Imprimir</button>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-md-2">
+
+                <label for="fechaRequisicion">Fecha Solicitud</label>
+                <input type="datetime" class="form-control" formControlName="fechaRequisicion" name="fechaRequisicion"
+                    id="fechaRequisicion" disabled required="true">
+
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-6">
+                <label for="codigoTipoRequisicion">Tipo Requisición</label>
+                <select class="form-select" formControlName="codigoTipoRequisicion" name="codigoTipoRequisicion"
+                    id="codigoTipoRequisicion">
+                    <option [value]="treq.cod_Tipo_Requisicion" *ngFor="let treq of tipoRequisicion">
+                        {{treq.nombre}}
+                    </option>
+                </select>
+                <small class="text-danger"
+                    *ngIf="this.formulario.get('codigoTipoRequisicion').hasError('required') && this.formulario.get('codigoTipoRequisicion').touched ">*
+                    El tipo de requisicion es obligatorio </small>
+            </div>
+            <div class="col-sm-6">
+                <label for="codigoArea">Área o Departamento</label>
+                <select class="form-select" formControlName="codigoArea" name="codigoArea" id="codigoArea">
+                    <option [value]="are.cod_Area" *ngFor="let are of area">{{are.nombre}} </option>
+
+                </select>
+                <small class="text-danger"
+                    *ngIf="this.formulario.get('codigoArea').hasError('required') && this.formulario.get('codigoArea').touched">*
+                    El Area es obligatorio </small>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-6">
+                <label for="codigoOficina">Sede u Oficina</label>
+                <select class="form-select" formControlName="codigoOficina" name="codigoOficina" id="codigoOficina">
+                    <option [value]="ofc.cod_Oficina" *ngFor="let ofc of oficina"> {{ofc.nombre}} </option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <label for="fechaEsperadaEntrega">Fecha Esperada de Entrega</label>
+                <input type="date" min="{{fecha_esperada_entrega}}" formControlName="fechaEsperadaEntrega"
+                    class="form-control" name="fechaEsperadaEntrega" id="fechaEsperadaEntrega" onkeydown="return /^[^0-9]*$/.test(event.key)">
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-sm-6">
+                <label for="codigoRecibe">Persona Que Recibe</label>
+
+                <select class="form-select" formControlName="codigoRecibe" name="codigoRecibe" id="codigoRecibe">
+                    <option [value]="u.codusuario" *ngFor="let u of usuarios"> {{u.nombre}} </option>
+                </select>
+
+
+            </div>
+            <div class="col-sm-6">
+                <label for="observaciones">Observaciones</label>
+                <textarea class="form-control" name="observaciones" id="observaciones" formControlName="observaciones"
+                    cols="1" rows="1">  </textarea>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col">
+                <h2 class="text-center color-titulo">Detalle de productos o servicios</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col d-flex justify-content-center">
+                <button type="button" class="btn btn-primary" (click)="agregar()">Agregar detalle</button>
+            </div>
+        </div>
+        <div class="row mt-3 mb-5">
+            <div class="col mb-5 d-flex justify-content-center">
+                <table>
+                    <thead>
+                        <tr class="backtable text-center">
+                            <th> </th>
+                            <th>Tipo de producto o servicio </th>
+                            <th>Unidad de Medida</th>
+                            <!-- <th>Existencias</th> -->
+                            <th>Descripción</th>
+                            <th>Marca Sugerida</th>
+                            <th>Referencia</th>
+                            <th>Cantidad</th>
+                        </tr>
+
+                    </thead>
+                    <tbody formArrayName="requisicionDetalle"
+                        *ngFor="let detP of requisicionDetalle.controls;let i=index">
+                        <tr [formGroupName]="i">
+                            <td>
+                                <i class="fa-solid fa-xmark hover" (click)="eliminar(i)"></i>
+                            </td>
+                            <td>
+                                <select class="form-select" (change)="cambiarProducto($event,i)" formControlName="codigoProducto" name="codigoProducto" id="codigoProducto"
+                                    required="true" >
+                                    <option *ngFor="let codProducto of productos" [value]="codProducto.codProducto"> {{codProducto.nombre}} </option>
+                                </select>
+                            </td>
+                       
+                            <td>
+                                <input type="text" formControlName="unidadMedida" class="form-control"
+                                    name="unidadMedida"  id="unidadMedida" disabled>
+                            </td>
+                            <!-- <td>
+                                <input type="text" formControlName="existencias" class="form-control" name="existencias"
+                                    id="existencias" disabled>
+                            </td> -->
+                            <td>
+                                <input type="text" formControlName="descripcion" class="form-control" name="descripcion"
+                                    id="descripcion" required>
+                            </td>
+                            <td>
+                                <input type="text" formControlName="marca" class="form-control" name="marca" id="marca">
+                            </td>
+                            <td>
+                                <input type="text" formControlName="referencia" class="form-control" name="referencia"
+                                    id="referencia">
+                            </td>
+                            <td>
+                                <input type="number" min="1" formControlName="cantidad" class="form-control"
+                                    name="cantidad" id="cantidad" onkeydown="return /^[1-9][0-9]*$/.test(event.target.value +event.key)|| event.key === 'Backspace' || event.key === 'Delete'">
+                                <small class="text-danger" *ngIf="this.requisicionDetalle.controls[i]['controls'].cantidad.hasError('required')&&
+                                        this.requisicionDetalle.controls[i]['controls'].cantidad.touched">* La
+                                    cantidad es obligatoria </small>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</div>

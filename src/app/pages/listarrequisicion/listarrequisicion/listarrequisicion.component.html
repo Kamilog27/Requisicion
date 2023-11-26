@@ -1,0 +1,95 @@
+<div class="container mb-5">
+    <div class="row">
+        <div class="col mt-5">
+            <h2 class="text-center color-titulo">Requisiciones</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col mt-5">
+            <table>
+                <thead>
+                    <tr class="backtable text-center">
+                        <th> </th>
+                        <th> </th>
+                        <th>Codigo Requisicion </th>
+                        <th>Fecha De Requisicion</th>
+                        <th>Codigo Tipo De Requisicion</th>
+                        <th>Codigo Oficina</th>
+                        <th>Nombre Oficina</th>
+                        <th>Código Area</th>
+                        <th>Nombre Area</th>
+                        <th>Fecha Esperada Entrega</th>
+                        <th>Codigo Usuario Crea</th>
+                        <th>Fecha Creacion</th>
+                        <th>Observaciones</th>
+                        <th>Codigo Estado</th>
+                        <th>Codigo Usuario Encargado</th>
+                        <th>Fecha Asignacion</th>
+                        <th>Nombre Tipo Requisicion</th>
+                        <th>Nombre Encargado</th>
+                    </tr>
+
+                </thead>
+                <tbody>
+                    <tr class="text-center" *ngFor="let lreq of listarRequisiciones">
+                        <td>
+                            <i class="fa-solid fa-xmark mx-2" (click)="del(lreq)"></i>    
+                        </td>
+                        <td>
+                            <i class="fa-solid fa-pencil" (click)="edit(lreq)" ></i>    
+                            
+                        </td>
+                        <td>
+                            {{lreq.codigoRequisicion}}
+                        </td>
+                        <td>
+                            {{lreq.fechaRequisicion | date:"short"}}
+                        </td>
+                        <td>
+                            {{lreq.codigoTipoRequisicion}}
+                        </td>
+                        <td>
+                            {{lreq.codigoOficina}}
+                        </td>
+                        <td>
+                            {{lreq.nombreOficina}}
+                        </td>
+                        <td>
+                            {{lreq.codigoArea}}
+                        </td>
+                        <td>
+                            {{lreq.nombreArea}}
+                        </td>
+                        <td>
+                            {{lreq.fechaEsperadaEntrega| date:"short"}}
+                        </td>
+                        <td>
+                            {{lreq.codigoUsuarioCrea}}
+                        </td>
+                        <td>
+                            {{lreq.fechaCreacion|date:"short"}}
+                        </td>
+                        <td>
+                            {{lreq.Observaciones}}
+                        </td>
+                        <td>
+                            {{lreq.codigoEstado}}
+                        </td>
+                        <td>
+                            {{lreq.codigoUsuarioEncargado}}
+                        </td>
+                        <td>
+                            {{lreq.fechaAsignacion| date:"short"}}
+                        </td>
+                        <td>
+                            {{lreq.nombreTipoRequisicion}}
+                        </td>
+                        <td>
+                            {{lreq.nombreEncargado}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
