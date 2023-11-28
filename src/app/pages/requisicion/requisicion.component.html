@@ -18,11 +18,9 @@
         </div>
         <div class="row mt-3">
             <div class="col-md-2">
-
                 <label for="fechaRequisicion">Fecha Solicitud</label>
                 <input type="datetime" class="form-control" formControlName="fechaRequisicion" name="fechaRequisicion"
                     id="fechaRequisicion" disabled required="true">
-
             </div>
         </div>
         <div class="row mt-3">
@@ -59,7 +57,8 @@
             <div class="col-sm-6">
                 <label for="fechaEsperadaEntrega">Fecha Esperada de Entrega</label>
                 <input type="date" min="{{fecha_esperada_entrega}}" formControlName="fechaEsperadaEntrega"
-                    class="form-control" name="fechaEsperadaEntrega" id="fechaEsperadaEntrega" onkeydown="return /^[^0-9]*$/.test(event.key)">
+                    class="form-control" name="fechaEsperadaEntrega" id="fechaEsperadaEntrega"
+                    onkeydown="return /^[^0-9]*$/.test(event.key)">
             </div>
         </div>
         <div class="row mt-3">
@@ -111,15 +110,17 @@
                                 <i class="fa-solid fa-xmark hover" (click)="eliminar(i)"></i>
                             </td>
                             <td>
-                                <select class="form-select" (change)="cambiarProducto($event,i)" formControlName="codigoProducto" name="codigoProducto" id="codigoProducto"
-                                    required="true" >
-                                    <option *ngFor="let codProducto of productos" [value]="codProducto.codProducto"> {{codProducto.nombre}} </option>
+                                <select class="form-select" (change)="cambiarProducto($event,i)"
+                                    formControlName="codigoProducto" name="codigoProducto" id="codigoProducto"
+                                    required="true">
+                                    <option *ngFor="let codProducto of productos" [value]="codProducto.codProducto">
+                                        {{codProducto.nombre}} </option>
                                 </select>
                             </td>
-                       
+
                             <td>
                                 <input type="text" formControlName="unidadMedida" class="form-control"
-                                    name="unidadMedida"  id="unidadMedida" disabled>
+                                    name="unidadMedida" id="unidadMedida" disabled>
                             </td>
                             <!-- <td>
                                 <input type="text" formControlName="existencias" class="form-control" name="existencias"
@@ -138,11 +139,12 @@
                             </td>
                             <td>
                                 <input type="number" min="1" formControlName="cantidad" class="form-control"
-                                    name="cantidad" id="cantidad" onkeydown="return /^[1-9][0-9]*$/.test(event.target.value +event.key)|| event.key === 'Backspace' || event.key === 'Delete'">
+                                    name="cantidad" id="cantidad"
+                                    onkeydown="return /^[1-9][0-9]*$/.test(event.target.value +event.key)|| event.key === 'Backspace' || event.key === 'Delete'">
                                 <small class="text-danger" *ngIf="this.requisicionDetalle.controls[i]['controls'].cantidad.hasError('required')&&
                                         this.requisicionDetalle.controls[i]['controls'].cantidad.touched">* La
                                     cantidad es obligatoria </small>
-                                
+
                             </td>
                         </tr>
                     </tbody>

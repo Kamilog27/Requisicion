@@ -2,7 +2,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { detalleProducto } from 'src/app/shared/interfaces/detalleProducto.interface';
+
 import { Oficina } from 'src/app/shared/interfaces/office.interface';
 import { TipoRequision } from 'src/app/shared/interfaces/tipoRequisicion.interface';
 import { RequisicionService } from 'src/app/shared/requisicion.service';
@@ -13,6 +13,7 @@ import { switchMap } from 'rxjs/operators';
 import { Productos } from 'src/app/shared/interfaces/productos.interface';
 import Swal from 'sweetalert2';
 import { ActivatedRoute, Router } from '@angular/router';
+import { detalleProducto } from 'src/app/shared/interfaces/detalleProducto.interface';
 
 @Component({
   selector: 'app-requisicion',
@@ -21,8 +22,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class RequisicionComponent implements OnInit {
 
-  fechaActual = this.pipe.transform(new Date(), 'yyyy-MM-dd T hh:mm:ss');
+  fechaRequisicion = this.pipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+
   fecha_esperada_entrega = this.pipe.transform(new Date(), 'yyyy-MM-dd');
+  
 
   oficina: Oficina[] = [];
   area: Area[] = [];
@@ -34,16 +37,16 @@ export class RequisicionComponent implements OnInit {
 
   formulario: FormGroup = this.fb.group({
     codigoRequisicion: 0,
-    fechaRequisicion: [this.fechaActual],
+    fechaRequisicion: [this.fechaRequisicion],
     codigoTipoRequisicion: [this.tipoRequisicion, Validators.required],
     codigoOficina: [this.oficina],
     codigoArea: [this.area, Validators.required],
     fechaEsperadaEntrega: [this.fecha_esperada_entrega],
-    fechaCreacion: [this.fechaActual],
+    fechaCreacion: [this.fechaRequisicion],
     codigoRecibe: [this.usuarios],
     codigoUsuarioEncargado: [0],
     codigoUsuarioCrea: [1],
-    fechaAsignacion: [this.fechaActual],
+    fechaAsignacion: [this.fechaRequisicion],
     observaciones: [''],
     codigoEstado: [1],
     requisicionDetalle: this.fb.array([this.requisicionDetalleform()]),
@@ -57,9 +60,14 @@ export class RequisicionComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    
 
     if (!this.router.url.includes('editar')) {
       this.texto = 'Solicitar';
+      this.agregar();
+      this.agregar();
+      this.agregar();
+      this.agregar();
     } else {
       this.texto = 'Modificar';
       this.activatedRoute.params
@@ -70,22 +78,50 @@ export class RequisicionComponent implements OnInit {
             return this.router.navigateByUrl('/listarrequisiciones');
           }
           this.imprimir = true;
-          this.formulario.setValue({
-            codigoRequisicion: requisicion.codigoRequisicion,
-            fechaRequisicion: requisicion.fechaRequisicion,
-            codigoTipoRequisicion: requisicion.codigoTipoRequisicion,
-            codigoOficina: requisicion.codigoOficina,
-            codigoArea: requisicion.codigoArea,
-            fechaEsperadaEntrega: requisicion.fechaEsperadaEntrega,
-            codigoRecibe: requisicion.codigoRecibe,
-            codigoUsuarioCrea: requisicion.codigoUsuarioCrea,
-            fechaCreacion: requisicion.fechaCreacion,
-            observaciones: requisicion.observaciones,
-            codigoEstado: requisicion.codigoEstado,
-            codigoUsuarioEncargado: requisicion.codigoUsuarioEncargado,
-            fechaAsignacion: requisicion.fechaAsignacion,
-            requisicionDetalle: requisicion.requisicionDetalle
-          })
+          const arreglo:detalleProducto[]=requisicion.requisicionDetalle;
+          if(arreglo&&arreglo.length==1){
+          }
+          else if(arreglo&&arreglo.length==2){
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==3){
+            this.agregar();
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==4){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }else if(arreglo&&arreglo.length==5){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==6){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          this.formulario.patchValue(requisicion);
+        //   this.formulario.setValue({
+        //     codigoRequisicion: requisicion.codigoRequisicion,
+        //     fechaRequisicion: requisicion.fechaRequisicion,
+        //     codigoTipoRequisicion: requisicion.codigoTipoRequisicion,
+        //     codigoOficina: requisicion.codigoOficina,
+        //     codigoArea: requisicion.codigoArea,
+        //     fechaEsperadaEntrega: requisicion.fechaEsperadaEntrega,
+        //     codigoRecibe: requisicion.codigoRecibe,
+        //     codigoUsuarioCrea: requisicion.codigoUsuarioCrea,
+        //     fechaCreacion: requisicion.fechaCreacion,
+        //     observaciones: requisicion.observaciones,
+        //     codigoEstado: requisicion.codigoEstado,
+        //     codigoUsuarioEncargado: requisicion.codigoUsuarioEncargado,
+        //     fechaAsignacion: requisicion.fechaAsignacion,
+        //     requisicionDetalle: requisicion.requisicionDetalle
+        //   })
         });
       // console.log(this.requisicionDetalle.controls[0]['controls'].cantidad.value);
     } this.requisicionService.getListOffice().subscribe(oficinas => {
@@ -119,8 +155,8 @@ export class RequisicionComponent implements OnInit {
 
   requisicionDetalleform() {
     return this.fb.group({
-      codigoDetalle: [''],
-      codigoRequisicion: [''],
+      codigoDetalle: [0],
+      codigoRequisicion: [0],
       nombre: [''],
       codigoProducto: ['', Validators.required],
       unidadMedida: [''],
@@ -269,6 +305,19 @@ export class RequisicionComponent implements OnInit {
   }
 
   guardar() {
+    const fechaReq=this.formulario.get('fechaRequisicion').value
+    const fechaR= this.pipe.transform(fechaReq, 'yyyy-MM-ddTHH:mm:ss');
+
+    const fechaEspEnt=this.formulario.get('fechaEsperadaEntrega').value
+    const fechaE= this.pipe.transform(fechaEspEnt, 'yyyy-MM-ddTHH:mm:ss');
+    this.formulario.patchValue({
+      fechaRequisicion:fechaR,
+      fechaCreacion:fechaR,
+      fechaAsignacion:fechaR,
+      fechaEsperadaEntrega:fechaE,
+
+    });
+    console.log(this.formulario.value);
     if (!this.router.url.includes('editar')) {
       Swal.fire({
         title: "Guardar requisición",
