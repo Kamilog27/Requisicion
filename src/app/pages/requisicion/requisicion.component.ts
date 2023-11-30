@@ -44,7 +44,7 @@ export class RequisicionComponent implements OnInit {
     fechaEsperadaEntrega: [this.fecha_esperada_entrega],
     fechaCreacion: [this.fechaRequisicion],
     codigoRecibe: [this.usuarios],
-    codigoUsuarioEncargado: [0],
+    codigoUsuarioEncargado: [''],
     codigoUsuarioCrea: [1],
     fechaAsignacion: [this.fechaRequisicion],
     observaciones: [''],
@@ -64,10 +64,7 @@ export class RequisicionComponent implements OnInit {
 
     if (!this.router.url.includes('editar')) {
       this.texto = 'Solicitar';
-      this.agregar();
-      this.agregar();
-      this.agregar();
-      this.agregar();
+
     } else {
       this.texto = 'Modificar';
       this.activatedRoute.params
@@ -77,8 +74,12 @@ export class RequisicionComponent implements OnInit {
           if (!requisicion) {
             return this.router.navigateByUrl('/listarrequisiciones');
           }
+           console.log(requisicion);
           this.imprimir = true;
+          
           const arreglo:detalleProducto[]=requisicion.requisicionDetalle;
+
+
           if(arreglo&&arreglo.length==1){
           }
           else if(arreglo&&arreglo.length==2){
@@ -105,23 +106,66 @@ export class RequisicionComponent implements OnInit {
             this.agregar();
             this.agregar();
           }
-          this.formulario.patchValue(requisicion);
-        //   this.formulario.setValue({
-        //     codigoRequisicion: requisicion.codigoRequisicion,
-        //     fechaRequisicion: requisicion.fechaRequisicion,
-        //     codigoTipoRequisicion: requisicion.codigoTipoRequisicion,
-        //     codigoOficina: requisicion.codigoOficina,
-        //     codigoArea: requisicion.codigoArea,
-        //     fechaEsperadaEntrega: requisicion.fechaEsperadaEntrega,
-        //     codigoRecibe: requisicion.codigoRecibe,
-        //     codigoUsuarioCrea: requisicion.codigoUsuarioCrea,
-        //     fechaCreacion: requisicion.fechaCreacion,
-        //     observaciones: requisicion.observaciones,
-        //     codigoEstado: requisicion.codigoEstado,
-        //     codigoUsuarioEncargado: requisicion.codigoUsuarioEncargado,
-        //     fechaAsignacion: requisicion.fechaAsignacion,
-        //     requisicionDetalle: requisicion.requisicionDetalle
-        //   })
+          else if(arreglo&&arreglo.length==7){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==8){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==9){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          else if(arreglo&&arreglo.length==10){
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+            this.agregar();
+          }
+          
+          let fechaR=this.pipe.transform(requisicion.fechaRequisicion, 'yyyy-MM-dd hh:mm:ss');
+        
+          let fechaEE=this.pipe.transform(requisicion.fechaEsperadaEntrega, 'yyyy-MM-dd');
+          
+          // this.formulario.patchValue(requisicion);
+          this.formulario.setValue({
+            codigoRequisicion: requisicion.codigoRequisicion,
+            fechaRequisicion: fechaR,
+            codigoTipoRequisicion: requisicion.codigoTipoRequisicion,
+            codigoOficina: requisicion.codigoOficina,
+            codigoArea: requisicion.codigoArea,
+            fechaEsperadaEntrega: fechaEE,
+            codigoRecibe: requisicion.codigoRecibe,
+            codigoUsuarioCrea: requisicion.codigoUsuarioCrea,
+            fechaCreacion: requisicion.fechaCreacion,
+            observaciones: requisicion.observaciones,
+            codigoEstado: requisicion.codigoEstado,
+            codigoUsuarioEncargado: requisicion.codigoUsuarioEncargado,
+            fechaAsignacion: requisicion.fechaAsignacion,
+            requisicionDetalle: requisicion.requisicionDetalle
+          })
         });
       // console.log(this.requisicionDetalle.controls[0]['controls'].cantidad.value);
     } this.requisicionService.getListOffice().subscribe(oficinas => {
@@ -293,6 +337,12 @@ export class RequisicionComponent implements OnInit {
       if (detalle && detalle.get('unidadMedida')) {
         detalle.get('unidadMedida').setValue('RESMAS 100 HOJAS');
       }
+    } else if (valorSeleccionado == "13" && this.requisicionDetalle) {
+      const detalle = this.requisicionDetalle.at(i);
+
+      if (detalle && detalle.get('unidadMedida')) {
+        detalle.get('unidadMedida').setValue('#PASAJEROS');
+      }
 
     } else {
       const detalle = this.requisicionDetalle.at(i);
@@ -305,23 +355,27 @@ export class RequisicionComponent implements OnInit {
   }
 
   guardar() {
+    console.log(this.formulario.value);
     const fechaReq=this.formulario.get('fechaRequisicion').value
     const fechaR= this.pipe.transform(fechaReq, 'yyyy-MM-ddTHH:mm:ss');
 
     const fechaEspEnt=this.formulario.get('fechaEsperadaEntrega').value
     const fechaE= this.pipe.transform(fechaEspEnt, 'yyyy-MM-ddTHH:mm:ss');
+
+    const codUsuEnc=this.formulario.get('codigoRecibe').value;
+
     this.formulario.patchValue({
       fechaRequisicion:fechaR,
       fechaCreacion:fechaR,
       fechaAsignacion:fechaR,
       fechaEsperadaEntrega:fechaE,
-
+      codigoUsuarioEncargado:codUsuEnc
     });
     console.log(this.formulario.value);
     if (!this.router.url.includes('editar')) {
       Swal.fire({
         title: "Guardar requisición",
-        text: "¿Seguro que quieres guardar la requisición?!",
+        text: "¿Seguro que quieres guardar la requisición?",
         icon: "info",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -343,7 +397,7 @@ export class RequisicionComponent implements OnInit {
     } else {
       Swal.fire({
         title: "Modificar requisición",
-        text: "¿Seguro que quieres modificar la requisición?!",
+        text: "¿Seguro que quieres modificar la requisición?",
         icon: "info",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
@@ -352,19 +406,19 @@ export class RequisicionComponent implements OnInit {
         cancelButtonText: "Cancelar"
       }).then((result) => {
         if (result.isConfirmed) {
-          this.requisicionService.postRequisicion(this.formulario.value).subscribe(res => {
+          this.requisicionService.updateRequisicion(this.formulario.value).subscribe(res => {
             Swal.fire({
-              title: "Requisición creada!",
+              title: "Requisición Modificada!",
               text: `La requisición ${res.codigoRequisicion} ha sido modificada.`,
               icon: "success"
             });
+            console.log(res);
             this.router.navigateByUrl('/listarrequisiciones');
           })
         }
       });
     }
   }
-
 }
 
 

@@ -48,6 +48,9 @@ export class RequisicionService {
   postRequisicion(formulario:Requisiciones){
     return this.http.post<Requisiciones>(`${this.baseUrl}/Requisiciones/CrearRequisicion?key=3xp1nn`,formulario);
   }
+  updateRequisicion(formulario:Requisiciones){
+    return this.http.post<Requisiciones>(`${this.baseUrl}/Requisiciones/ModificarRequisicion?key=3xp1nn`,formulario);
+  }
   deleteRequisicion(codigoRequisicion:number){
     return this.http.post(`${this.baseUrl}/Requisiciones/EliminarRequisicion?key=3xp1nn&codigo=${codigoRequisicion}`,codigoRequisicion);
   }
