@@ -8,7 +8,7 @@ import { RequisicionComponent } from './pages/requisicion/requisicion.component'
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { ListarrequisicionComponent } from './pages/listarrequisicion/listarrequisicion/listarrequisicion.component';
+import { ListarrequisicionComponent } from './pages/listarrequisicion/listarrequisicion.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
