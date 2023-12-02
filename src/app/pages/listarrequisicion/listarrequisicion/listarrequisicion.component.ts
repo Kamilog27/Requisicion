@@ -4,6 +4,7 @@ import { Requisiciones } from 'src/app/shared/interfaces/requisiciones.interface
 import { RequisicionService } from 'src/app/shared/requisicion.service';
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-listarrequisicion',
   templateUrl: './listarrequisicion.component.html',
@@ -12,6 +13,7 @@ import Swal from 'sweetalert2';
 export class ListarrequisicionComponent implements OnInit {
 
   listarRequisiciones: Requisiciones[] = [];
+  page=0;
   constructor(private requisicionService: RequisicionService,
     private router: Router) { }
 
@@ -52,7 +54,7 @@ export class ListarrequisicionComponent implements OnInit {
       });
     }
   }
-
+  
   edit(requisicion) {
     if (requisicion.codigoEstado != 1) {
       Swal.fire({
@@ -64,5 +66,16 @@ export class ListarrequisicionComponent implements OnInit {
       this.router.navigate(['/editar/', requisicion.codigoRequisicion]);
 
     }
+  }
+
+  prevPage(){
+    
+      this.page+=5;
+    
+  }
+  nextPage(){
+    if(this.page>0){
+      this.page-=5;
+    }   
   }
 }

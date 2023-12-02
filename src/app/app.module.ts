@@ -9,7 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { ListarrequisicionComponent } from './pages/listarrequisicion/listarrequisicion/listarrequisicion.component';
-
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -21,7 +21,8 @@ import { ListarrequisicionComponent } from './pages/listarrequisicion/listarrequ
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxPaginationModule
   ],
   providers: [//{provide : LocationStrategy , useClass : HashLocationStrategy}
     DatePipe

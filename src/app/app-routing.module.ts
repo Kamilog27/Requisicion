@@ -4,6 +4,7 @@ import { RequisicionComponent } from './pages/requisicion/requisicion.component'
 import { HomeComponent } from './pages/home/home.component';
 import { ListarrequisicionComponent } from './pages/listarrequisicion/listarrequisicion/listarrequisicion.component';
 
+
 const routes: Routes = [
   {path:'requisicion',component:RequisicionComponent},
   {path:'listarrequisiciones',component:ListarrequisicionComponent},
